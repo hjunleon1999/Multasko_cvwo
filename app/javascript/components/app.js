@@ -7,30 +7,48 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import UserList from "./UserList/user-list";
 import './style.scss';
 import Login from "./Login/login"
+import Signup from "./Signup/signup"
 import Navbar from "./Navbar/navbar"
 import left_backgroud from '../../assets/images/david-emrich-sOtX6xo0njE-unsplash.jpg'
+import {setUser} from '../services/core-utils'
 
-/**
- * <Router>
-          <UserList path="/" />
-          <Login path="/login" />
-        </Router>
- */
 class App extends Component {
   constructor(){
     super()
+    //Set up store
+
+    //Validate jwt token
+    this.state = {
+      redirect:null
+    }
     console.log("App js constructor")
     console.log(localStorage.getItem("token"), typeof localStorage.getItem("token"))
     if (localStorage.getItem("token") != "undefined" && localStorage.getItem("token") != undefined) {
+      console.log("Authenticating")
       fetch(`api/login`, {
         headers: {"Authenticate": localStorage.token}
       })
       .then(res => res.json())
       .then(user =>{
-        setUser(user)
+        console.log(user)
+        console.log(window.location.pathname)
+        if ("status" in user){
+          if (user["status"] == "success"){
+            setUser(user)
+            this.setState({
+              redirect: null
+            })
+          }
+        } else {
+          this.setState({
+            redirect: "/login"
+          })
+        }
       })
     }
-    
+    if (this.state.redirect && this.state.redirect != window.location.pathname) {
+      return <Redirect to={this.state.redirect} />
+    }
   }
 
   componentDidMount() {   
@@ -56,6 +74,10 @@ class App extends Component {
             <Route path="/login">
               <Login />
             </Route>
+            <Route path="/signup">
+              <Signup />
+            </Route>
+          
           </Switch>
         </div>
         <div className="background">
