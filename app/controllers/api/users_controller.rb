@@ -1,3 +1,5 @@
+require '../services/core_utils.rb'
+
 class Api::UsersController < ApiController
     #skip_before_action :verify_authenticity_token
     def secret_key
@@ -19,8 +21,8 @@ class Api::UsersController < ApiController
     def login
         puts "params"
         puts params[:email]
-        users = User.all
-        puts users
+        #users = User.all
+        #puts users
         user = User.find_by(email: params[:email])
 
         puts user.password_digest
@@ -31,6 +33,10 @@ class Api::UsersController < ApiController
         if user && !user.password_digest.nil? && user.authenticate(params[:password])
             payload = {user_id: user.id}
             token = encode(payload)
+            UserMailer.with(user: user).welcome_email.deliver_now
+
+            #format.html { redirect_to(user, notice: 'User was successfully created.') }
+            #format.json { render json: user, status: :created, location: user }
             render :json => {user: user, token: token}
         else 
             render json: {error: "User not found"}
@@ -40,9 +46,11 @@ class Api::UsersController < ApiController
     def signup 
         puts login_params
         user = User.create(login_params)
-        if user.valid?
+        if user.save && user.valid?
             payload = {user_id: user.id}
             token = encode(payload)
+            # Tell the UserMailer to send a welcome email after save
+            
             puts token
             render json: {user: user, jwt: token}
         else
@@ -61,6 +69,14 @@ class Api::UsersController < ApiController
 
     end
 
+    def reset_password
+        user = User.find_by(email: user_params[:email])
+        if user
+
+        else 
+            render json: {error: "User not found"}
+        end
+    end
     private 
         def login_params
             params.permit(:user_name, :password, :email)

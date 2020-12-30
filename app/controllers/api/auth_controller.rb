@@ -30,4 +30,7 @@ class Api::AuthController < ApiController
         render json: user
 
     end
+
+    
+
 end

@@ -6,6 +6,7 @@ export const LOGGEDOUT = "LOGGEDOUT"
 export const CREATEUSER = "CREATEUSER"
 export const UPDATEUSER = "UPDATEUSER"
 export const GETUSER = "GETUSER"
+export const SETUSER = "SETUSER"
 
 export const addUser = ({username,password}) => ({
     type: CREATEUSER,
@@ -14,6 +15,16 @@ export const addUser = ({username,password}) => ({
         password: password
     }
 })
+
+export const setUser = (username, email) => ({
+    type: SETUSER,
+    data: {
+        username: username,
+        email: email
+    }
+})
+
+//export const unsetUser
 
 export const ARCHIVEBOARD = "ARCHIVEBOARD"
 export const DELETEBOARD = "DELETEBOARD"

@@ -1,48 +1,28 @@
 import React, { useEffect, useState } from "react";
-import './signup.scss'
+import './forgot.scss'
 
 import { connect } from 'react-redux'
 import { setUser } from '../../actions'
 class Signup extends React.Component {
   constructor(props) {
     super(props);
-    /*this.props = {
-      username:'',
-      password: '',
-      confirmPassword: '',
-      email: ''
-    };*/
-    //this.handleSignup = this.handleSignup.bind(this);
-    //console.log(props)
     console.log(this)
     this.handleInputChange = this.handleInputChange.bind(this);
   }
     render() {
-      //<!--<button className = "login-menu__submit confirm">Log In</button>
-      //console.log(this.props)
-      //console.log(this.props.username)
-      const { handleSignup, decrement, increment, reset } = this.props;
       return (
         <div className="login-section">
-          <form id = "login-form" onSubmit = {this.handleSignup}>
+          <form id = "login-form" onSubmit = {this.handleForgot}>
             <div className = "login-menu">
               <h1 className = "login-menu__title">
-                Sign up to Multasko           
+                Can't log in?          
               </h1>
               <div className = "login-menu__credentials">
-                <div id = "user-name-entry">
-                  <input value={this.props.username} onChange={this.handleInputChange} type="text" name="username" data-id="username" className="form-field" autoCorrect="off" spellCheck="false" autoCapitalize="off" autoFocus="autofocus" placeholder="Enter username" autoComplete="username" />
-                </div>
+                <label id="email-label">We'll send a recovery link to</label>
                 <div id = "user-email-entry">
                   <input value={this.props.email} onChange={this.handleInputChange} type="text" name="email" data-id="email" className="form-field" autoCorrect="off" spellCheck="false" autoCapitalize="off" autoFocus="autofocus" placeholder="Enter email" autoComplete="username" inputMode="email" />
                 </div>
-                <div id = "password-entry">
-                  <input value={this.props.password } onChange={this.handleInputChange} type="password" name="password" data-id="password" className="form-field" placeholder="Enter password" autoComplete="current-password" />
-                </div>
-                <div id = "confirm-password-entry">
-                  <input value={this.props.confirmPassword} onChange={this.handleInputChange} type="password" name="confirmPassword" data-id="confirmPassword" className="form-field" placeholder="Confirm password" autoComplete="current-password" />
-                </div>
-                <input id="login" type="submit" className="button width-100-percent button-green" value="Log in"></input>
+                <input id="login" type="submit" className="button width-100-percent button-green" value="Send recovery link"></input>
                 
               </div>
             </div>
@@ -67,33 +47,25 @@ class Signup extends React.Component {
       }
     }
 
-    handleSignup = (e) => {
-      //this.props.signMeUp()
-      console.log(e)
+    handleForgot = (e) => {
       e.preventDefault()
-      console.log(this.props)
-      const {username,email, password, confirmPassword} = this.state
-      console.log(`${password} vs ${confirmPassword}`)
-      console.log(email)
-      if (password != confirmPassword){
-        alert("Mismatched passwords")
-        return
-      }
-      fetch(`api/signup`, {
+      const {email} = this.state
+      //check is valid email
+      fetch(`api/forgot_password`, {
         method: "POST",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({user_name: username, email: email, password: password})
+        body: JSON.stringify({email: email})
       }).then(res => res.json()).then(
         data => {
           console.log(data)
+          /*
           if (data.jwt != undefined){
             console.log("SUCCESSSINGUP")
             localStorage.setItem("token", data.jwt)
             console.log(this.props.setUser)
             this.props.setUser(username,email)
-          }
+          }*/
           
-          //setUser(data.user)
         }
       )
     }

@@ -1,43 +1,27 @@
 
 import { connect } from 'react-redux'
-import { setVisibilityFilter } from '../actions'
+import { setUser } from '../actions'
 import Signup from '../components/Signup/signup'
 
-const mapStateToProps = (state, ownProps) => ({
-    //active: ownProps.filter === state.visibilityFilter,
-    username:ownProps.username,
-    password: ownProps.password,
-    confirmPassword: ownProps.confirmPassword,
-    email: ownProps.email
-})
+const mapStateToProps = (state, ownProps) => {
+    return {
+        //active: ownProps.filter === state.visibilityFilter,
+        username:state.username,
+        password: state.password,
+        confirmPassword: state.confirmPassword,
+        email: state.email
+    }
+}
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-    handleSignup = (e) => {
-        //this.props.signMeUp()
-        console.log(e)
-        e.preventDefault()
-        const {username,email, password, confirmPassword} = ownProps
-        console.log(`${password} vs ${confirmPassword}`)
-        if (password != confirmPassword){
-          alert("Mismatched passwords")
-          return
+const mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+        setUser: (username,email)=>{
+            dispatch(setUser(username,email))
         }
-        fetch(`api/signup`, {
-          method: "POST",
-          headers: {"Content-Type": "application/json"},
-          body: JSON.stringify({user_name: username, email: email, password: password})
-        }).then(res => res.json()).then(
-          data => {
-            console.log(data)
-            if (data.token != undefined){
-              console.log("SUCCESSSINGUP")
-              localStorage.setItem("token", data.token)
-            }
-            setUser(data.user)
-          }
-        )
-      }
-})
+    }   
+}
+
+
 
 export default connect(
   mapStateToProps,

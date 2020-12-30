@@ -15,3 +15,44 @@
     margin-top: 10px;
     margin-bottom: 25px;
 }
+
+hr {
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    height: 0;
+}
+
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid hsl(0,0%,80%);
+    margin: 1em 0;
+    padding: 0;
+    margin-top: 25px;
+}
+
+.bottom-form-link {
+    text-align: center;
+    font-size: 14px;
+    display: block;
+    padding: 0;
+}
+.bottom-form-link li {
+    display: inline-block;
+    list-style: none;
+}
+
+.bottom-form-link li:not(:first-child)::before {
+    content: "\2022";
+    margin: 0 8px 0px 4px;
+}
+
+a {
+    background: transparent;
+}
+
+a {
+    text-decoration: none;
+    color: #0052CC;
+}

@@ -29,7 +29,15 @@ class Login extends React.Component {
                   <input value={this.state.password} onChange={this.handleInputChange} type="password" name="password" data-id="password" className="form-field" placeholder="Enter password" autoComplete="current-password" />
                 </div>
                 <input id="login" type="submit" className="button width-100-percent button-green" value="Log in"></input>
-                
+                <hr />
+                <ul className="bottom-form-link"> 
+                <li>
+                  <a className="forgotLink" href="/forgot" data-analytics-link="forgotPasswordLink">Can't log in?</a>
+                </li>
+                <li>
+                  <a className="signupLink" href="/signup" data-analytics-link="signUpLoginLink">Sign up for an account</a>
+                </li> 
+                </ul>
               </div>
             </div>
           </form>

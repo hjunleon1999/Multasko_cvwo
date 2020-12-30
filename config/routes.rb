@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   post "api/login", to: "api/users#login"
   get "api/login", to: "api/users#token_authenticate"
   post "api/signup", to: "api/users#signup"
+  post "api/forgot", to: "api/users#reset_password"
   
 
   get "*path", to: "home#index", constraints: { format: "html" }
